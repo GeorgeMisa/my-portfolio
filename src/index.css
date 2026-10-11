@@ -18,3 +18,159 @@ body {
 section {
   scroll-margin-top: 110px;
 }
+
+
+/* =========================================
+   PREMIUM CYBERPUNK V2 — DESIGN SYSTEM
+   ========================================= */
+
+:root {
+  --cyber-bg: #050816;
+  --cyber-surface: #0b1023;
+  --cyber-cyan: #22d3ee;
+  --cyber-purple: #a855f7;
+  --cyber-text: #f8fafc;
+  --cyber-muted: #94a3b8;
+  --cyber-border: rgba(34, 211, 238, 0.16);
+}
+
+/* Global typography and rendering */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 110px;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  background: var(--cyber-bg);
+  color: var(--cyber-text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.3);
+  color: #fff;
+}
+
+/* Premium holographic glass surface */
+.cyber-glass {
+  background: rgba(11, 16, 35, 0.82);
+  border: 1px solid var(--cyber-border);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+}
+
+/* Subtle animated gradient border */
+.cyber-gradient-border {
+  position: relative;
+  isolation: isolate;
+}
+
+.cyber-gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    120deg,
+    rgba(34, 211, 238, 0.5),
+    rgba(168, 85, 247, 0.12),
+    rgba(34, 211, 238, 0.5)
+  );
+  background-size: 200% 200%;
+  animation: cyber-border-flow 8s ease infinite;
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  pointer-events: none;
+}
+
+/* Glowing text */
+.cyber-text-glow {
+  text-shadow:
+    0 0 16px rgba(34, 211, 238, 0.25),
+    0 0 35px rgba(34, 211, 238, 0.08);
+}
+
+/* Premium hover glow */
+.cyber-hover {
+  transition:
+    transform 300ms ease,
+    border-color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.cyber-hover:hover {
+  transform: translateY(-3px);
+  border-color: rgba(34, 211, 238, 0.4);
+  box-shadow: 0 12px 40px rgba(34, 211, 238, 0.1);
+}
+
+/* Small system status indicator */
+.cyber-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cyber-cyan);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.8);
+}
+
+/* HUD corner decoration */
+.cyber-hud {
+  position: relative;
+}
+
+.cyber-hud::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  border-top: 2px solid rgba(34, 211, 238, 0.65);
+  border-right: 2px solid rgba(34, 211, 238, 0.65);
+  border-top-right-radius: inherit;
+  pointer-events: none;
+}
+
+/* Animations */
+@keyframes cyber-border-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .cyber-gradient-border::before {
+    animation: none;
+  }
+
+  .cyber-hover {
+    transition: none;
+  }
+
+  .cyber-hover:hover {
+    transform: none;
+  }
+}

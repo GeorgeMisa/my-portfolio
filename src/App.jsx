@@ -1,6 +1,9 @@
 
-import { motion, useReducedMotion } from 'motion/react'
+import CyberBackground from './components/Cyberbackground'
+import CursorGlow from './components/CursorGlow'
+import ScrollProgress from './components/ScrollProgress'
 
+import { motion, useReducedMotion } from 'motion/react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -12,7 +15,7 @@ import Footer from './components/Footer'
 function App() {
   const reduceMotion = useReducedMotion()
 
-  // Animation settings shared by the sections
+  // Shared section scroll animations
   const reveal = {
     initial: reduceMotion
       ? { opacity: 1, y: 0 }
@@ -27,50 +30,59 @@ function App() {
 
     transition: {
       duration: reduceMotion ? 0 : 0.65,
-      ease: "easeOut",
+      ease: 'easeOut',
     },
   }
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[#050816] text-white">
+    <div className="relative isolate min-h-screen overflow-x-hidden bg-[#050816] text-white">
 
-      {/* Futuristic Background */}
-      <div className="pointer-events-none absolute left-[-180px] top-20 h-[450px] w-[450px] rounded-full bg-cyan-500/10 blur-[120px]" />
+      {/* Animated Cyber Background */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        <CyberBackground />
+      </div>
 
-      <div className="pointer-events-none absolute right-[-180px] top-[500px] h-[450px] w-[450px] rounded-full bg-purple-600/10 blur-[120px]" />
+      {/* Ambient Cyan Glow */}
+      <div className="pointer-events-none fixed -left-40 top-20 z-0 h-[450px] w-[450px] rounded-full bg-cyan-500/10 blur-[120px]" />
 
+      {/* Ambient Purple Glow */}
+      <div className="pointer-events-none fixed -right-40 top-1/2 z-0 h-[450px] w-[450px] rounded-full bg-purple-600/10 blur-[120px]" />
+
+      {/* Main Portfolio Content */}
       <div className="relative z-10">
 
-        {/* Navigation */}
         <Navbar />
 
-        {/* Hero */}
         <Hero />
 
-        {/* About Animation */}
         <motion.div {...reveal}>
           <About />
         </motion.div>
 
-        {/* Skills Animation */}
         <motion.div {...reveal}>
           <Skills />
         </motion.div>
 
-        {/* Projects Animation */}
         <motion.div {...reveal}>
           <Projects />
         </motion.div>
 
-        {/* Contact Animation */}
         <motion.div {...reveal}>
           <Contact />
         </motion.div>
 
-        {/* Footer */}
-        <Footer />
+        <motion.div {...reveal}>
+          <Footer />
+        </motion.div>
 
       </div>
+
+      {/* Cursor Glow - Above Website Content */}
+      <CursorGlow />
+
+      {/* Scroll Progress */}
+      <ScrollProgress />
+
     </div>
   )
 }

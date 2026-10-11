@@ -1,30 +1,41 @@
 
+import { useState } from 'react'
+import SpotlightCard from './SpotlightCard'
+
+const EMAIL = 'japmisa2000@gmail.com'
+
 const contactInfo = [
   {
-    title: "Email Address",
-    value: "japmisa2000@gmail.com",
-    link: "mailto:japmisa2000@gmail.com",
-    icon: "email",
-    color: "cyan",
-    action: "Send an Email",
+    number: '01',
+    code: 'MAIL.CHANNEL',
+    title: 'Email Address',
+    value: EMAIL,
+    link: `mailto:${EMAIL}`,
+    icon: 'email',
+    color: 'cyan',
+    action: 'Send an Email',
     external: false,
   },
   {
-    title: "GitHub Profile",
-    value: "github.com/GeorgeMisa",
-    link: "https://github.com/GeorgeMisa",
-    icon: "github",
-    color: "purple",
-    action: "View GitHub",
+    number: '02',
+    code: 'CODE.REPOSITORY',
+    title: 'GitHub Profile',
+    value: 'github.com/GeorgeMisa',
+    link: 'https://github.com/GeorgeMisa',
+    icon: 'github',
+    color: 'purple',
+    action: 'View GitHub',
     external: true,
   },
   {
-    title: "Phone Number",
-    value: "09484894306",
-    link: "tel:+639484894306",
-    icon: "phone",
-    color: "cyan",
-    action: "Call Me",
+    number: '03',
+    code: 'VOICE.CHANNEL',
+    title: 'Phone Number',
+    value: '09484894306',
+    link: 'tel:+639484894306',
+    icon: 'phone',
+    color: 'cyan',
+    action: 'Call Me',
     external: false,
   },
 ]
@@ -34,16 +45,16 @@ function ContactIcon({ type }) {
   const common = {
     width: 26,
     height: 26,
-    viewBox: "0 0 24 24",
-    fill: "none",
-    stroke: "currentColor",
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
     strokeWidth: 1.8,
-    strokeLinecap: "round",
-    strokeLinejoin: "round",
-    "aria-hidden": true,
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    'aria-hidden': true,
   }
 
-  if (type === "email") {
+  if (type === 'email') {
     return (
       <svg {...common}>
         <rect x="3" y="5" width="18" height="14" rx="2" />
@@ -52,7 +63,7 @@ function ContactIcon({ type }) {
     )
   }
 
-  if (type === "phone") {
+  if (type === 'phone') {
     return (
       <svg {...common}>
         <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 3.09 5.18 2 2 0 0 1 5.08 3h3a2 2 0 0 1 2 1.72l.4 2.81a2 2 0 0 1-.57 1.72L8.1 11.06a16 16 0 0 0 4.84 4.84l1.81-1.81a2 2 0 0 1 1.72-.57l2.81.4A2 2 0 0 1 22 16.92Z" />
@@ -61,22 +72,41 @@ function ContactIcon({ type }) {
   }
 
   return (
-    <svg
-      {...common}
-      fill="currentColor"
-      stroke="none"
-    >
-      <path d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.76-.24.76-.54v-2.1c-3.1.67-3.76-1.32-3.76-1.32-.5-1.28-1.23-1.62-1.23-1.62-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15.99 1.69 2.6 1.2 3.23.92.1-.72.39-1.2.71-1.48-2.48-.28-5.09-1.24-5.09-5.53 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.42.11-2.96 0 0 .94-.3 3.08 1.15a10.7 10.7 0 0 1 5.6 0c2.14-1.45 3.07-1.15 3.07-1.15.61 1.54.23 2.68.12 2.96.72.78 1.14 1.78 1.14 3 0 4.3-2.61 5.24-5.1 5.52.4.35.76 1.02.76 2.06v3.05c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z" />
+    <svg {...common} fill="currentColor" stroke="none">
+      <path d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.76-.24.76-.54v-2.1c-3.1.67-3.76-1.32-3.76-1.32-.5-1.28-1.23-1.28-1.23-1.62-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15.99 1.69 2.6 1.2 3.23.92.1-.72.39-1.2.71-1.48-2.48-.28-5.09-1.24-5.09-5.53 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.42.11-2.96 0 0 .94-.3 3.08 1.15a10.7 10.7 0 0 1 5.6 0c2.14-1.45 3.07-1.15 3.07-1.15.61 1.54.23 2.68.12 2.96.72.78 1.14 1.78 1.14 3 0 4.3-2.61 5.24-5.1 5.52.4.35.76 1.02.76 2.06v3.05c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z" />
     </svg>
   )
 }
 
 function Contact() {
+  const [copyStatus, setCopyStatus] = useState('idle')
+
+  async function handleCopyEmail() {
+    try {
+      await navigator.clipboard.writeText(EMAIL)
+      setCopyStatus('success')
+    } catch {
+      setCopyStatus('error')
+    }
+  }
+
   return (
     <section
       id="contact"
       className="relative mx-auto max-w-6xl scroll-mt-24 px-5 py-20 md:px-6 md:py-24"
     >
+      {/* System Header */}
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-cyan-400/15 pb-4 font-mono text-[10px] uppercase tracking-[0.2em]">
+        <span className="text-cyan-400">
+          COMMS.HUB / 005
+        </span>
+
+        <span className="flex items-center gap-2 text-emerald-300">
+          <span className="cyber-status-dot" />
+          Channels Available
+        </span>
+      </div>
+
       {/* Section Heading */}
       <div className="mb-12">
         <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-cyan-400 sm:text-sm">
@@ -84,7 +114,7 @@ function Contact() {
         </p>
 
         <h2 className="text-4xl font-black tracking-tight text-white md:text-5xl">
-          Let's{" "}
+          Let's{' '}
           <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
             Connect.
           </span>
@@ -98,13 +128,30 @@ function Contact() {
         </p>
       </div>
 
-      {/* Main Contact Container */}
-      <div className="relative isolate overflow-hidden rounded-3xl border border-cyan-400/20 bg-white/[0.03] p-5 backdrop-blur-xl sm:p-8 md:p-10">
+      {/* Main Communication Hub */}
+      <div className="relative isolate overflow-hidden rounded-3xl border border-cyan-400/20 bg-[#0b1023]/70 p-5 backdrop-blur-xl sm:p-8 md:p-10">
 
-        {/* Background Glow */}
-        <div className="pointer-events-none absolute -right-24 -top-24 -z-10 h-72 w-72 rounded-full bg-purple-500/10 blur-[100px]" />
+        {/* Ambient Glows */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-24 -top-24 -z-10 h-72 w-72 rounded-full bg-purple-500/10 blur-[100px]"
+        />
 
-        <div className="pointer-events-none absolute -bottom-24 -left-24 -z-10 h-72 w-72 rounded-full bg-cyan-500/10 blur-[100px]" />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-24 -left-24 -z-10 h-72 w-72 rounded-full bg-cyan-500/10 blur-[100px]"
+        />
+
+        {/* Hub Header */}
+        <div className="mb-10 flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-5">
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-cyan-300">
+            {'<communication_hub />'}
+          </span>
+
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500">
+            03 CONTACT CHANNELS
+          </span>
+        </div>
 
         {/* Introduction */}
         <div className="mb-12 text-center">
@@ -113,11 +160,12 @@ function Contact() {
               <span className="absolute inline-flex h-full w-full rounded-full bg-cyan-400/40 motion-safe:animate-ping" />
               <span className="relative h-2.5 w-2.5 rounded-full bg-cyan-400" />
             </span>
+
             Open to Opportunities
           </div>
 
           <h3 className="mb-5 text-2xl font-bold tracking-tight text-white sm:text-3xl md:text-4xl">
-            Let's build something{" "}
+            Let's build something{' '}
             <span className="bg-gradient-to-r from-cyan-300 to-purple-400 bg-clip-text text-transparent">
               amazing.
             </span>
@@ -130,62 +178,127 @@ function Contact() {
           </p>
         </div>
 
-        {/* Contact Cards */}
+        {/* Contact Channels */}
         <div className="grid gap-5 md:grid-cols-3">
           {contactInfo.map((contact) => {
-            const isCyan = contact.color === "cyan"
+            const isCyan = contact.color === 'cyan'
 
             return (
-              <a
-                key={contact.title}
-                href={contact.link}
-                target={contact.external ? "_blank" : undefined}
-                rel={contact.external ? "noopener noreferrer" : undefined}
-                className={`group relative flex min-w-0 flex-col rounded-2xl border bg-[#0b1023]/80 p-6 transition-all duration-300 hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-4 ${
-                  isCyan
-                    ? "border-cyan-400/20 hover:border-cyan-400/60 hover:shadow-[0_0_30px_rgba(34,211,238,0.12)] focus-visible:outline-cyan-400"
-                    : "border-purple-400/20 hover:border-purple-400/60 hover:shadow-[0_0_30px_rgba(168,85,247,0.12)] focus-visible:outline-purple-400"
-                }`}
+              <SpotlightCard
+                key={contact.number}
+                accent={contact.color}
+                className="h-full rounded-2xl"
               >
-                {/* Icon and Arrow */}
-                <div className="mb-6 flex items-start justify-between gap-3">
-                  <div
-                    className={`flex h-14 w-14 items-center justify-center rounded-2xl border ${
-                      isCyan
-                        ? "border-cyan-400/30 bg-cyan-400/10 text-cyan-300"
-                        : "border-purple-400/30 bg-purple-400/10 text-purple-300"
-                    }`}
-                  >
-                    <ContactIcon type={contact.icon} />
+                <div className="cyber-hud relative flex h-full min-w-0 flex-col overflow-hidden rounded-2xl p-6">
+
+                  {/* Card System Label */}
+                  <div className="mb-6 flex items-center justify-between gap-3 border-b border-white/10 pb-4">
+                    <span
+                      className={`font-mono text-[10px] uppercase tracking-wider ${
+                        isCyan
+                          ? 'text-cyan-300'
+                          : 'text-purple-300'
+                      }`}
+                    >
+                      {contact.code}
+                    </span>
+
+                    <span className="font-mono text-[10px] text-slate-500">
+                      / {contact.number}
+                    </span>
                   </div>
 
-                  <span className="text-lg text-slate-500 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">
-                    ↗
-                  </span>
-                </div>
+                  {/* Icon */}
+                  <div className="mb-6 flex items-start justify-between gap-3">
+                    <div
+                      className={`flex h-14 w-14 items-center justify-center rounded-2xl border transition-all duration-300 motion-safe:group-hover:scale-110 ${
+                        isCyan
+                          ? 'border-cyan-400/30 bg-cyan-400/10 text-cyan-300 group-hover:shadow-[0_0_25px_rgba(34,211,238,0.2)]'
+                          : 'border-purple-400/30 bg-purple-400/10 text-purple-300 group-hover:shadow-[0_0_25px_rgba(168,85,247,0.2)]'
+                      }`}
+                    >
+                      <ContactIcon type={contact.icon} />
+                    </div>
 
-                {/* Contact Details */}
-                <p className="mb-2 text-xs font-medium uppercase tracking-widest text-slate-500">
-                  {contact.title}
-                </p>
-
-                <h4 className="break-all text-sm font-semibold text-white lg:text-base">
-                  {contact.value}
-                </h4>
-
-                <div className="mt-auto pt-8">
-                  <span
-                    className={`inline-flex items-center gap-2 text-sm font-semibold ${
-                      isCyan ? "text-cyan-300" : "text-purple-300"
-                    }`}
-                  >
-                    {contact.action}
-                    <span className="transition-transform duration-300 group-hover:translate-x-1">
-                      →
+                    <span
+                      aria-hidden="true"
+                      className="text-lg text-slate-500 transition-transform duration-300 motion-safe:group-hover:translate-x-1 motion-safe:group-hover:-translate-y-1"
+                    >
+                      ↗
                     </span>
-                  </span>
+                  </div>
+
+                  {/* Contact Details */}
+                  <p className="mb-2 text-xs font-medium uppercase tracking-widest text-slate-500">
+                    {contact.title}
+                  </p>
+
+                  <h4 className="break-all text-sm font-semibold text-white lg:text-base">
+                    {contact.value}
+                  </h4>
+
+                  {/* Contact Link */}
+                  <div className="mt-auto pt-8">
+                    <a
+                      href={contact.link}
+                      target={contact.external ? '_blank' : undefined}
+                      rel={contact.external ? 'noopener noreferrer' : undefined}
+                      className={`inline-flex items-center gap-2 rounded-md text-sm font-semibold transition-all duration-300 hover:gap-3 focus-visible:outline-2 focus-visible:outline-offset-4 ${
+                        isCyan
+                          ? 'text-cyan-300 focus-visible:outline-cyan-400'
+                          : 'text-purple-300 focus-visible:outline-purple-400'
+                      }`}
+                    >
+                      {contact.action}
+                      <span aria-hidden="true">→</span>
+                    </a>
+                  </div>
+
+                  {/* Copy Email Button */}
+                  {contact.icon === 'email' && (
+                    <div className="mt-4">
+                      <button
+                        type="button"
+                        onClick={handleCopyEmail}
+                        className="inline-flex min-h-10 items-center justify-center rounded-lg border border-cyan-400/25 bg-cyan-400/10 px-4 py-2 text-xs font-semibold text-cyan-300 transition-all duration-300 hover:border-cyan-400/60 hover:bg-cyan-400/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+                      >
+                        {copyStatus === 'success'
+                          ? '✓ Email Copied!'
+                          : copyStatus === 'error'
+                            ? 'Copy Failed — Try Again'
+                            : 'Copy Email Address'}
+                      </button>
+
+                      <span
+                        className="sr-only"
+                        role="status"
+                        aria-live="polite"
+                      >
+                        {copyStatus === 'success'
+                          ? 'Email address copied to clipboard.'
+                          : copyStatus === 'error'
+                            ? 'Unable to copy email address.'
+                            : ''}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Card Status */}
+                  <div className="mt-6 flex items-center justify-between border-t border-white/10 pt-4">
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-slate-500">
+                      Channel Ready
+                    </span>
+
+                    <span
+                      className={`h-2 w-2 rounded-full ${
+                        isCyan
+                          ? 'bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.7)]'
+                          : 'bg-purple-400 shadow-[0_0_12px_rgba(168,85,247,0.7)]'
+                      }`}
+                    />
+                  </div>
                 </div>
-              </a>
+              </SpotlightCard>
             )
           })}
         </div>
@@ -197,8 +310,8 @@ function Contact() {
           </p>
 
           <a
-            href="mailto:japmisa2000@gmail.com"
-            className="inline-flex min-h-12 items-center justify-center rounded-xl border border-cyan-300/50 bg-cyan-400 px-8 py-3 font-semibold text-[#050816] shadow-[0_0_25px_rgba(34,211,238,0.25)] transition duration-300 hover:-translate-y-1 hover:bg-cyan-300 hover:shadow-[0_0_40px_rgba(34,211,238,0.45)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-400"
+            href={`mailto:${EMAIL}`}
+            className="inline-flex min-h-12 items-center justify-center rounded-xl border border-cyan-300/50 bg-cyan-400 px-8 py-3 font-semibold text-[#050816] shadow-[0_0_25px_rgba(34,211,238,0.25)] transition duration-300 hover:-translate-y-1 hover:bg-cyan-300 hover:shadow-[0_0_40px_rgba(34,211,238,0.45)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-400 motion-reduce:hover:translate-y-0"
           >
             Send Me an Email ↗
           </a>
